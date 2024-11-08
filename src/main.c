@@ -89,7 +89,7 @@ int main() {
   bitStack *bmp_binary = bmp_comp_binary(image, width, height);
 
   // write bits to file
-  FILE *file = fopen("compressed_image.txt", "wb");
+  FILE *file = fopen("compressed_image.bin", "wb");
 
   if (!file) {
     perror("Can't open file for writing!");

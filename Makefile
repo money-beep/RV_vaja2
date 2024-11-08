@@ -1,7 +1,7 @@
 
 C = gcc
 
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -Wall -Wextra -Iinclude -g
 
 # source and test file + all headers
 MAIN_SOURCES = src/bitStack.c src/main.c src/bmp_comp_binary.c src/predict_value.c src/compress.c $(wildcard include/*.c)

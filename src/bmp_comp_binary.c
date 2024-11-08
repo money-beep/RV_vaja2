@@ -34,27 +34,27 @@ void set_header(bitStack *bmp_binary, const int height, const long min,
 }
 
 bitStack *bmp_comp_binary(uint8_t **image, const int width, const int height) {
-  // num of pixels
   int num_pix = width * height;
   printf("Number of pixels: %d\n", num_pix);
-  // predicted values
   long *p_values = (long *)malloc(num_pix * sizeof(long));
+
   // pointer array for proccesing of predicted values
   predict_value(p_values, image, width, height);
+
   long *c_weave = (long *)malloc(num_pix * sizeof(long));
   c_weave[0] = p_values[0];
 
   for (int i = 1; i < num_pix; i++) {
     if (p_values[i] >= 0)
-      c_weave[i] = p_values[i] * 2;
+      c_weave[i] = c_weave[i - 1] + (p_values[i] * 2);
     else
-      c_weave[i] = p_values[i] * -2 - 1;
+      c_weave[i] = c_weave[i - 1] + (abs((int)p_values[i]) * 2 - 1);
   }
+
   // accumulated values
   printf("Accumulating values...\n");
   long *accumulated_values = (long *)malloc(num_pix * sizeof(long));
   accumulated_values[0] = c_weave[0];
-
   for (int i = 1; i < num_pix; i++) {
     accumulated_values[i] = accumulated_values[i - 1] + c_weave[i];
   }
@@ -69,7 +69,6 @@ bitStack *bmp_comp_binary(uint8_t **image, const int width, const int height) {
   set_header(bmp_binary, height, c_weave[0], c_weave[num_pix - 1], num_pix);
   printf("Starting compression...\n");
   compress(bmp_binary, c_weave, 0, num_pix - 1);
-  printf("Compression done!\n");
 
   printf("Compression done!\n");
 
