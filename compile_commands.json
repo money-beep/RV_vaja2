@@ -5,43 +5,14 @@
       "-Wall",
       "-Wextra",
       "-Iinclude",
+      "-g",
       "-c",
       "-o",
-      "src/bmp_comp_binary.o",
-      "src/bmp_comp_binary.c"
+      "src/bmp_decomp_binary.o",
+      "src/bmp_decomp_binary.c"
     ],
     "directory": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2",
-    "file": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/bmp_comp_binary.c",
-    "output": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/bmp_comp_binary.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/cc",
-      "-Wall",
-      "-Wextra",
-      "-Iinclude",
-      "-c",
-      "-o",
-      "src/predict_value.o",
-      "src/predict_value.c"
-    ],
-    "directory": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2",
-    "file": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/predict_value.c",
-    "output": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/predict_value.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/cc",
-      "-Wall",
-      "-Wextra",
-      "-Iinclude",
-      "-c",
-      "-o",
-      "src/compress.o",
-      "src/compress.c"
-    ],
-    "directory": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2",
-    "file": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/compress.c",
-    "output": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/compress.o"
+    "file": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/bmp_decomp_binary.c",
+    "output": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/bmp_decomp_binary.o"
   }
 ]

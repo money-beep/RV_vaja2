@@ -66,9 +66,10 @@ bitStack *bmp_comp_binary(uint8_t **image, const int width, const int height) {
   bmp_binary->index = 0;
   bmp_binary->top = 0;
 
-  set_header(bmp_binary, height, c_weave[0], c_weave[num_pix - 1], num_pix);
+  set_header(bmp_binary, height, accumulated_values[0],
+             accumulated_values[num_pix - 1], num_pix);
   printf("Starting compression...\n");
-  compress(bmp_binary, c_weave, 0, num_pix - 1);
+  compress(bmp_binary, accumulated_values, 0, num_pix - 1);
 
   printf("Compression done!\n");
 

@@ -4,7 +4,7 @@ C = gcc
 CFLAGS = -Wall -Wextra -Iinclude -g
 
 # source and test file + all headers
-MAIN_SOURCES = src/bitStack.c src/main.c src/bmp_comp_binary.c src/predict_value.c src/compress.c $(wildcard include/*.c)
+MAIN_SOURCES = src/bitStack.c src/main.c src/bmp_comp_binary.c src/predict_value.c src/compress.c src/bmp_decomp_binary.c src/predict_value_inverse.c src/decompress.c $(wildcard include/*.c)
 
 # object files
 MAIN_OBJECTS = $(MAIN_SOURCES:.c=.o)

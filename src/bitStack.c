@@ -33,6 +33,17 @@ void encode(bitStack *cValues, int needed_bits, long value) {
   }
 }
 
+int decode(bitStack *cValues, int needed_bits) {
+  int value = 0;
+  for (int i = 0; i < needed_bits; i++) {
+    ensureReadSpace(cValues);
+    value =
+        (value << 1) | ((cValues->bits[cValues->index] >> cValues->top) & 1);
+    cValues->top++;
+  }
+  return value;
+}
+
 void ensureSpace(bitStack *cValues) {
   // if bit goes over range
   if (cValues->top >= 32) {

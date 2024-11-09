@@ -11,6 +11,8 @@ const char *FILEPATH_3 = "assets/slike3/";
 
 bitStack *bmp_comp_binary(uint8_t **image, const int width, const int height);
 
+uint8_t **bmp_decomp_binary(bitStack *bmp_compressed);
+
 uint8_t **read_bmp_image(const char *filename, int *width, int *height,
                          int *offset, int *bit_depth, uint8_t **image) {
   char *full_path = (char *)malloc(256 * sizeof(char *));
@@ -88,21 +90,15 @@ int main() {
 
   bitStack *bmp_binary = bmp_comp_binary(image, width, height);
 
-  // write bits to file
-  FILE *file = fopen("compressed_image.bin", "wb");
+  uint8_t **image_decompressed = (uint8_t **)malloc(sizeof(uint8_t *) * height);
+  printf("Decompression started...\n");
 
-  if (!file) {
-    perror("Can't open file for writing!");
-    exit(1);
+  image_decompressed = bmp_decomp_binary(bmp_binary);
+
+  // print out first 10 pixels
+  for (int i = 0; i < 10; i++) {
+    printf("%d ", image_decompressed[0][i]);
   }
-  // write bits to file
-  fwrite(bmp_binary->bits, sizeof(long), bmp_binary->size * sizeof(long), file);
-  // write number of bits to file
-  fwrite(&bmp_binary->size, sizeof(int), 1, file);
-  // write number of pixels to file
-  fwrite(&width, sizeof(int), 1, file);
-  // finish writing
-  fclose(file);
 
   return 0;
 }

@@ -1,4 +1,4 @@
 assets/*
 main
 src/*.o
-
+compressed_image.*
