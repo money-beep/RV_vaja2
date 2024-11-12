@@ -13,21 +13,21 @@ void decode_header(bitStack *bmp_compressed, int *height, int *first_element,
                    long *last_element, int *num_pix) {
   // height
   // 16 bits
-  long decoded_value;
-  decode(bmp_compressed, 16, &decoded_value);
+  unsigned long decoded_value;
+  decode(bmp_compressed, 32, &decoded_value);
   *height = (int)decoded_value;
   printf("height decoded: %d\n", *height);
 
   // first
   // 8 bits
-  decode(bmp_compressed, 8, &decoded_value);
+  decode(bmp_compressed, 16, &decoded_value);
   *first_element = (int)decoded_value;
   printf("first element decoded: %d\n", *first_element);
 
   // last
   // 32 bits
   decode(bmp_compressed, 32, &decoded_value);
-  *last_element = decoded_value;
+  *last_element = (long)decoded_value;
   printf("last element decoded: %ld\n", *last_element);
 
   // num of pixels
@@ -59,23 +59,11 @@ uint8_t **bmp_decomp_binary(bitStack *bmp_compressed) {
   decompress(bmp_compressed, accumulated_values, 0, num_pix - 1);
   printf("decompressed values\n");
 
-  printf("\n\naccumulated values: ");
-  for (int i = 0; i < num_pix; i++) {
-    printf("%d ", accumulated_values[i]);
-  }
-  printf("\n");
-
   long *c_weave = (long *)malloc(num_pix * sizeof(long));
   c_weave[0] = accumulated_values[0];
   for (int i = 1; i < num_pix; i++) {
     c_weave[i] = accumulated_values[i] - accumulated_values[i - 1];
   }
-
-  printf("c_weave values: ");
-  for (int i = 0; i < num_pix; i++) {
-    printf("%ld ", c_weave[i]);
-  }
-  printf("\n");
 
   long *p_values = (long *)malloc(num_pix * sizeof(long));
   p_values[0] = c_weave[0];
@@ -86,12 +74,6 @@ uint8_t **bmp_decomp_binary(bitStack *bmp_compressed) {
       p_values[i] = -((c_weave[i] + 1) / 2);
     }
   }
-
-  printf("p_values: ");
-  for (int i = 0; i < num_pix; i++) {
-    printf("%ld ", p_values[i]);
-  }
-  printf("\n");
 
   uint8_t **image = (uint8_t **)malloc(width * (int)sizeof(uint8_t *));
   for (int i = 0; i < width; i++) {

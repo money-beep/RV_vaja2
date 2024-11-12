@@ -16,16 +16,11 @@ void set_header(bitStack *bmp_binary, const int height, const int min,
                 const long max, const int num_pix) {
   printf("Setting header...\n");
 
-  encode(bmp_binary, 16, height);
-  printf("Height set %d ", height);
+  encode(bmp_binary, 32, (unsigned int)height);
+  encode(bmp_binary, 16, (unsigned int)min);
+  encode(bmp_binary, 32, (unsigned long)max);
+  encode(bmp_binary, 32, (unsigned int)num_pix);
 
-  encode(bmp_binary, 8, min);
-  printf("\nFirst set %d ", min);
-
-  encode(bmp_binary, 32, max);
-  printf("\nLast set %ld- ", max);
-
-  encode(bmp_binary, 32, num_pix);
   printf("\nHeader set!\n");
 }
 

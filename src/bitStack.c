@@ -26,8 +26,12 @@ void reallocStack(bitStack *cValues) {
 void encode(bitStack *cValues, int needed_bits, long value) {
   for (int i = needed_bits - 1; i >= 0; i--) {
     ensureSpace(cValues);
-    if ((value >> i) & 1) {
-      cValues->bits[cValues->index] |= (1 << cValues->top);
+
+    // clear first bit
+    cValues->bits[cValues->index] &= ~(1L << cValues->top);
+
+    if ((value >> i) & 1L) {
+      cValues->bits[cValues->index] |= (1L << cValues->top);
     }
     cValues->top++;
   }
@@ -37,8 +41,8 @@ void decode(bitStack *cValues, int needed_bits, long *value) {
   *value = 0;
   for (int i = 0; i < needed_bits; i++) {
     ensureReadSpace(cValues);
-    if ((cValues->bits[cValues->index] >> cValues->top) & 1) {
-      *value |= (1 << (needed_bits - 1 - i));
+    if ((cValues->bits[cValues->index] >> cValues->top) & 1L) {
+      *value |= (1L << (needed_bits - 1 - i));
     }
     cValues->top++;
   }
