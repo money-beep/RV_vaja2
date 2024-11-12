@@ -12,53 +12,49 @@ void encode(bitStack *cValues, int needed_bits, long value);
 // first element - 8 bits
 // last element - 32 bits
 // num of pixels - 32 bits
-void set_header(bitStack *bmp_binary, const int height, const long min,
+void set_header(bitStack *bmp_binary, const int height, const int min,
                 const long max, const int num_pix) {
   printf("Setting header...\n");
-  // height
-  // 16 bits
+
   encode(bmp_binary, 16, height);
-  printf("Height set!\n");
-  // first
-  // 8 bits
+  printf("Height set %d ", height);
+
   encode(bmp_binary, 8, min);
-  printf("First set!\n");
-  // last
-  // 32 bits
+  printf("\nFirst set %d ", min);
+
   encode(bmp_binary, 32, max);
-  printf("Last set!\n");
-  // num of pixels
-  // 32 bits
+  printf("\nLast set %ld- ", max);
+
   encode(bmp_binary, 32, num_pix);
-  printf("Header set!\n");
+  printf("\nHeader set!\n");
 }
 
 bitStack *bmp_comp_binary(uint8_t **image, const int width, const int height) {
   int num_pix = width * height;
-  printf("Number of pixels: %d\n", num_pix);
+  printf("Number of pixels: %d, Width: %d, Height: %d\n", num_pix, width,
+         height);
   long *p_values = (long *)malloc(num_pix * sizeof(long));
 
   // pointer array for proccesing of predicted values
   predict_value(p_values, image, width, height);
 
+  // process predicted values - weave
   long *c_weave = (long *)malloc(num_pix * sizeof(long));
   c_weave[0] = p_values[0];
 
   for (int i = 1; i < num_pix; i++) {
     if (p_values[i] >= 0)
-      c_weave[i] = c_weave[i - 1] + (p_values[i] * 2);
+      c_weave[i] = (p_values[i] * 2);
     else
-      c_weave[i] = c_weave[i - 1] + (abs((int)p_values[i]) * 2 - 1);
+      c_weave[i] = (abs((int)p_values[i]) * 2 - 1);
   }
 
   // accumulated values
-  printf("Accumulating values...\n");
   long *accumulated_values = (long *)malloc(num_pix * sizeof(long));
   accumulated_values[0] = c_weave[0];
   for (int i = 1; i < num_pix; i++) {
     accumulated_values[i] = accumulated_values[i - 1] + c_weave[i];
   }
-  printf("Values accumulated!\n");
 
   bitStack *bmp_binary = (bitStack *)malloc(sizeof(bitStack));
   bmp_binary->size = 2;
@@ -66,12 +62,12 @@ bitStack *bmp_comp_binary(uint8_t **image, const int width, const int height) {
   bmp_binary->index = 0;
   bmp_binary->top = 0;
 
-  set_header(bmp_binary, height, accumulated_values[0],
-             accumulated_values[num_pix - 1], num_pix);
-  printf("Starting compression...\n");
+  // set header of bmp compressed file
+  set_header(bmp_binary, height, p_values[0], accumulated_values[num_pix - 1],
+             num_pix);
+  printf("Compression started...\n");
   compress(bmp_binary, accumulated_values, 0, num_pix - 1);
-
-  printf("Compression done!\n");
+  printf("Compression finished.\n");
 
   return bmp_binary;
 }

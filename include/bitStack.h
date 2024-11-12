@@ -11,7 +11,7 @@ void reallocStack(bitStack *cValues);
 
 void encode(bitStack *cValues, int needed_bits, long value);
 
-int decode(bitStack *cValues, int needed_bits);
+void decode(bitStack *cValues, int needed_bits, long *value);
 
 void ensureSpace(bitStack *cValues);
 

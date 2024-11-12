@@ -33,15 +33,15 @@ void encode(bitStack *cValues, int needed_bits, long value) {
   }
 }
 
-int decode(bitStack *cValues, int needed_bits) {
-  int value = 0;
+void decode(bitStack *cValues, int needed_bits, long *value) {
+  *value = 0;
   for (int i = 0; i < needed_bits; i++) {
     ensureReadSpace(cValues);
-    value =
-        (value << 1) | ((cValues->bits[cValues->index] >> cValues->top) & 1);
+    if ((cValues->bits[cValues->index] >> cValues->top) & 1) {
+      *value |= (1 << (needed_bits - 1 - i));
+    }
     cValues->top++;
   }
-  return value;
 }
 
 void ensureSpace(bitStack *cValues) {

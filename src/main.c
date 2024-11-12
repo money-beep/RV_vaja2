@@ -68,7 +68,7 @@ uint8_t **read_bmp_image(const char *filename, int *width, int *height,
 }
 
 int main() {
-  const char *filepath = "Baboon.bmp";
+  /*const char *filepath = "Baboon.bmp";
   int width, height, offset, bit_depth;
   uint8_t **image =
       (uint8_t **)malloc(sizeof(uint8_t *) * (int)sizeof(uint8_t *));
@@ -87,18 +87,60 @@ int main() {
   for (int i = 0; i < 10; i++) {
     printf("%d ", image[0][i]);
   }
+  */
+  uint8_t **image = (uint8_t **)malloc(4 * sizeof(uint8_t *));
 
-  bitStack *bmp_binary = bmp_comp_binary(image, width, height);
-
-  uint8_t **image_decompressed = (uint8_t **)malloc(sizeof(uint8_t *) * height);
-  printf("Decompression started...\n");
-
-  image_decompressed = bmp_decomp_binary(bmp_binary);
-
-  // print out first 10 pixels
-  for (int i = 0; i < 10; i++) {
-    printf("%d ", image_decompressed[0][i]);
+  for (int i = 0; i < 4; i++) {
+    image[i] = (uint8_t *)malloc(5 * sizeof(uint8_t));
   }
 
+  image[0][0] = 23;
+  image[0][1] = 21;
+  image[0][2] = 21;
+  image[0][3] = 23;
+  image[0][4] = 23;
+  image[1][0] = 24;
+  image[1][1] = 22;
+  image[1][2] = 22;
+  image[1][3] = 20;
+  image[1][4] = 24;
+  image[2][0] = 23;
+  image[2][1] = 22;
+  image[2][2] = 22;
+  image[2][3] = 19;
+  image[2][4] = 23;
+  image[3][0] = 26;
+  image[3][1] = 25;
+  image[3][2] = 21;
+  image[3][3] = 19;
+  image[3][4] = 22;
+
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 5; j++) {
+      printf("%d ", image[i][j]);
+    }
+    printf("\n");
+  }
+  bitStack *bmp_binary = bmp_comp_binary(image, 4, 5);
+
+  uint8_t **image_decompressed = (uint8_t **)malloc(4 * sizeof(uint8_t *));
+
+  for (int i = 0; i < 4; i++) {
+    image_decompressed[i] = (uint8_t *)malloc(5 * sizeof(uint8_t));
+  }
+  printf("Decompression started...\n");
+  image_decompressed = bmp_decomp_binary(bmp_binary);
+  printf("Decompression finished.\n");
+
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 5; j++) {
+      printf("%d ", image_decompressed[i][j]);
+    }
+  }
+
+  for (int i = 0; i < 4; i++) {
+    free(image[i]);
+  }
+  free(image);
   return 0;
 }

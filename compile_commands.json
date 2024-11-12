@@ -8,11 +8,11 @@
       "-g",
       "-c",
       "-o",
-      "src/bmp_decomp_binary.o",
-      "src/bmp_decomp_binary.c"
+      "src/bitStack.o",
+      "src/bitStack.c"
     ],
     "directory": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2",
-    "file": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/bmp_decomp_binary.c",
-    "output": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/bmp_decomp_binary.o"
+    "file": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/bitStack.c",
+    "output": "/home/mark/Documents/faks/TretjiLetnik/RV/vaja2/src/bitStack.o"
   }
 ]
