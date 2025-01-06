@@ -13,7 +13,7 @@ void decompress(bitStack *bmp_compressed, int *accumulated_values, int low,
       int mid = (int)floor((double)(low + high) / 2);
       long range = accumulated_values[high] - accumulated_values[low] + 1;
       int needed_bits = (int)ceil(log2(range));
-      long decoded_value;
+      unsigned long decoded_value;
 
       decode(bmp_compressed, needed_bits, &decoded_value);
       accumulated_values[mid] = accumulated_values[low] + decoded_value;

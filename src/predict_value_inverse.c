@@ -7,26 +7,28 @@ void predict_value_inverse(long *p_values, int width, int height,
                            uint8_t **image) {
   image[0][0] = p_values[0];
 
-  for (int x = 0; x < width; x++) {
-    for (int y = 0; y < height; y++) {
-      if (x == 0 && y == 0)
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+      int idx = y * width + x;
+
+      if (x == 0 && y == 0) {
         continue;
+      } else if (y == 0 && x > 0) {
+        image[y][x] = image[y][x - 1] - p_values[idx];
+      } else if (x == 0 && y > 0) {
+        image[y][x] = image[y - 1][x] - p_values[idx];
+      } else if (x > 0 && y > 0) {
+        uint8_t a = image[y - 1][x];
+        uint8_t b = image[y][x - 1];
+        uint8_t c = image[y - 1][x - 1];
 
-      else if (x == 0) {
-        image[x][y] = image[x][y - 1] - p_values[y * width + x];
-      } else if (y == 0) {
-        image[x][y] = image[x - 1][y] - p_values[y * width + x];
-      } else {
-        uint8_t a = image[x - 1][y];
-        uint8_t b = image[x][y - 1];
-        uint8_t c = image[x - 1][y - 1];
-
-        if (c >= MAX(a, b))
-          image[x][y] = MIN(a, b) - p_values[y * width + x];
-        else if (c <= MIN(a, b))
-          image[x][y] = MAX(a, b) - p_values[y * width + x];
-        else
-          image[x][y] = a + b - c - p_values[y * width + x];
+        if (c >= MAX(a, b)) {
+          image[y][x] = MIN(a, b) - p_values[idx];
+        } else if (c <= MIN(a, b)) {
+          image[y][x] = MAX(a, b) - p_values[idx];
+        } else {
+          image[y][x] = a + b - c - p_values[idx];
+        }
       }
     }
   }

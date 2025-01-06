@@ -37,7 +37,7 @@ void encode(bitStack *cValues, int needed_bits, long value) {
   }
 }
 
-void decode(bitStack *cValues, int needed_bits, long *value) {
+void decode(bitStack *cValues, int needed_bits, unsigned long *value) {
   *value = 0;
   for (int i = 0; i < needed_bits; i++) {
     ensureReadSpace(cValues);

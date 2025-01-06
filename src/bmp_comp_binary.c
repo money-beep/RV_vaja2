@@ -18,10 +18,12 @@ void set_header(bitStack *bmp_binary, const int height, const int min,
 
   encode(bmp_binary, 32, (unsigned int)height);
   encode(bmp_binary, 16, (unsigned int)min);
+  printf("set first element: %d\n", min);
   encode(bmp_binary, 32, (unsigned long)max);
+  printf("set last element: %ld\n", max);
   encode(bmp_binary, 32, (unsigned int)num_pix);
 
-  printf("\nHeader set!\n");
+  printf("Header set\n");
 }
 
 bitStack *bmp_comp_binary(uint8_t **image, const int width, const int height) {
@@ -60,9 +62,7 @@ bitStack *bmp_comp_binary(uint8_t **image, const int width, const int height) {
   // set header of bmp compressed file
   set_header(bmp_binary, height, p_values[0], accumulated_values[num_pix - 1],
              num_pix);
-  printf("Compression started...\n");
   compress(bmp_binary, accumulated_values, 0, num_pix - 1);
-  printf("Compression finished.\n");
 
   return bmp_binary;
 }

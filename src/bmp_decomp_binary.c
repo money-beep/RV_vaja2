@@ -44,10 +44,8 @@ uint8_t **bmp_decomp_binary(bitStack *bmp_compressed) {
   bmp_compressed->index = 0;
   bmp_compressed->top = 0;
 
-  printf("Decoding header...\n");
   decode_header(bmp_compressed, &height, &first_element, &last_element,
                 &num_pix);
-  printf("Header decoded\n");
 
   int width = num_pix / height;
 
@@ -55,9 +53,7 @@ uint8_t **bmp_decomp_binary(bitStack *bmp_compressed) {
   accumulated_values[0] = first_element;
   accumulated_values[num_pix - 1] = last_element;
 
-  printf("decompressing / getting accumulated values\n");
   decompress(bmp_compressed, accumulated_values, 0, num_pix - 1);
-  printf("decompressed values\n");
 
   long *c_weave = (long *)malloc(num_pix * sizeof(long));
   c_weave[0] = accumulated_values[0];
@@ -75,16 +71,14 @@ uint8_t **bmp_decomp_binary(bitStack *bmp_compressed) {
     }
   }
 
-  uint8_t **image = (uint8_t **)malloc(width * (int)sizeof(uint8_t *));
-  for (int i = 0; i < width; i++) {
-    image[i] = (uint8_t *)malloc(height * (int)sizeof(uint8_t));
+  uint8_t **image = (uint8_t **)malloc(height * (int)sizeof(uint8_t *));
+  for (int i = 0; i < height; i++) {
+    image[i] = (uint8_t *)malloc(width * (int)sizeof(uint8_t));
     if (image[i] == NULL) {
       perror("Can't allocate memory for image array!");
       exit(1);
     }
   }
-  printf("Predicting values...\n");
   predict_value_inverse(p_values, width, height, image);
-  printf("Predicted values computed!\nFinished!\n");
   return image;
 }
